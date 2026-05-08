@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Qbit - Calculator Suite</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            min-height: 100vh;
+            display: flex;
+            color: #ffffff;
+        }
+
+        /* Login Styles */
+        #loginPage {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            background: rgba(20, 25, 45, 0.8);
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            border-radius: 15px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            margin: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hexagon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a0a0b8;
+            font-size: 14px;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(100, 100, 150, 0.4);
+            border-radius: 8px;
+            background: rgba(30, 35, 55, 0.7);
+            color: #ffffff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]::placeholder,
+        input[type="password"]::placeholder {
+            color: #7a7a8e;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: rgba(99, 102, 241, 0.6);
+            background: rgba(30, 35, 55, 0.9);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .demo-account {
+            text-align: center;
+            color: #a0a0b8;
+            font-size: 13px;
+            margin: 25px 0;
+            font-weight: 400;
+        }
+
+        .sign-in-btn {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .sign-in-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .sign-in-btn:active {
+            transform: translateY(0);
+        }
+
+        .arrow {
+            font-size: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .sign-in-btn:hover .arrow {
+            transform: translateX(3px);
+        }
+
+        /* Calculator Styles */
+        #calculatorPage {
+            display: none;
+            flex: 1;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: 220px;
+            background: rgba(15, 20, 40, 0.95);
+            border-right: 1px solid rgba(100, 100, 150, 0.2);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(100, 100, 150, 0.2);
+        }
+
+        .hexagon-logo {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .calculators-label {
+            font-size: 11px;
+            color: #6a7a8e;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex: 1;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #a0a0b8;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: rgba(99, 102, 241, 0.15);
+            color: #ffffff;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .nav-icon {
+            font-size: 16px;
+            width: 20px;
+        }
+
+        .sign-out {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #a0a0b8;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        .sign-out:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ff6b6b;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .calculator-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            color: #ffffff;
+        }
+
+        .calculator-container {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(20, 30, 50, 0.8);
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .display {
+            background: rgba(15, 20, 40, 0.8);
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: right;
+            margin-bottom: 25px;
+            font-size: 36px;
+            font-weight: 300;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            word-wrap: break-word;
+            word-break: break-all;
+        }
+
+        .buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 16px;
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            background: rgba(30, 40, 65, 0.6);
+            color: #ffffff;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: rgba(40, 50, 75, 0.8);
+            border-color: rgba(100, 100, 150, 0.5);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn.operator {
+            color: #a0a0b8;
+        }
+
+        .btn.clear {
+            color: #ff6b6b;
+        }
+
+        .btn.equals {
+            grid-column: span 2;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border: none;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn.equals:hover {
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+        }
+
+        .scientific-layout {
+            display: flex;
+            gap: 12px;
+        }
+
+        .sci-functions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            flex: 1;
+        }
+
+        .sci-keypad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            flex: 1;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(30, 40, 65, 0.6);
+            color: #a0a0b8;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: #ffffff;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #a0a0b8;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(30, 40, 65, 0.6);
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .form-input::placeholder {
+            color: #6a7a8e;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(99, 102, 241, 0.6);
+            background: rgba(30, 40, 65, 0.9);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .result-card {
+            background: rgba(30, 40, 65, 0.6);
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .result-card.full {
+            grid-column: 1 / -1;
+        }
+
+        .result-label {
+            font-size: 12px;
+            color: #a0a0b8;
+            margin-bottom: 8px;
+        }
+
+        .result-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #10b981;
+        }
+
+        .converter-group {
+            margin-bottom: 20px;
+        }
+
+        .converter-label {
+            font-size: 14px;
+            color: #a0a0b8;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .converter-input-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .converter-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(30, 40, 65, 0.6);
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .converter-select {
+            padding: 12px 16px;
+            background: rgba(30, 40, 65, 0.6);
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .convert-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            border: none;
+            border-radius: 50%;
+            color: #ffffff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .convert-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .slider-group {
+            margin-bottom: 30px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .slider-label-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .slider-value {
+            font-size: 14px;
+            color: #6366f1;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(30, 40, 65, 0.6);
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+        }
+
+        .bmi-result {
+            background: rgba(30, 40, 65, 0.6);
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .bmi-number {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .bmi-status {
+            font-size: 16px;
+            font-weight: 600;
+            color: #10b981;
+        }
+
+        .bmi-scale {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            font-size: 12px;
+        }
+
+        .scale-item {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            border-radius: 6px;
+            background: rgba(30, 40, 65, 0.6);
+        }
+
+        .base-display {
+            background: rgba(15, 20, 40, 0.8);
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+        }
+
+        .base-label {
+            font-size: 11px;
+            color: #6a7a8e;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+        }
+
+        .base-input-group {
+            margin-bottom: 20px;
+        }
+
+        .base-input-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .base-input-label.decimal {
+            color: #6366f1;
+        }
+
+        .base-input-label.binary {
+            color: #10b981;
+        }
+
+        .base-input-label.hex {
+            color: #f59e0b;
+        }
+
+        .base-input-label.octal {
+            color: #6a7a8e;
+        }
+
+        .base-input {
+            width: 100%;
+            background: rgba(15, 20, 40, 0.8);
+            border: 2px solid rgba(100, 100, 150, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: 300;
+            text-align: left;
+        }
+
+        .base-input:focus {
+            outline: none;
+            border-color: rgba(99, 102, 241, 0.6);
+            background: rgba(15, 20, 40, 0.95);
+        }
+
+        .base-input.decimal {
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .base-input.binary {
+            border-color: rgba(16, 185, 129, 0.5);
+        }
+
+        .base-input.hex {
+            border-color: rgba(245, 158, 11, 0.5);
+        }
+
+        .base-input.octal {
+            border-color: rgba(106, 122, 142, 0.5);
+        }
+
+        .number-pad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .electrical-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .electrical-input-group {
+            margin-bottom: 15px;
+        }
+
+        .electrical-input-label {
+            font-size: 12px;
+            color: #a0a0b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            font-weight: 600;
+            display: block;
+        }
+
+        .electrical-input-wrapper {
+            display: flex;
+            gap: 8px;
+        }
+
+        .electrical-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(30, 40, 65, 0.6);
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        .electrical-unit {
+            padding: 12px 16px;
+            background: rgba(30, 40, 65, 0.6);
+            border: 1px solid rgba(100, 100, 150, 0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            cursor: pointer;
+            font-weight: 600;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .electrical-unit option {
+            color: #000000;
+            background: #ffffff;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .calc-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .calc-btn.primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .calc-btn.primary:hover {
+            box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+        }
+
+        .calc-btn.secondary {
+            background: rgba(30, 40, 65, 0.6);
+            color: #a0a0b8;
+            border: 1px solid rgba(100, 100, 150, 0.3);
+        }
+
+        .calc-btn.secondary:hover {
+            background: rgba(40, 50, 75, 0.8);
+        }
+
+        /* Toggle button for mobile */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1001;
+            padding: 10px;
+        }
+
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+
+            #calculatorPage {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: fixed;
+                top: 0;
+                left: -100%;
+                height: 100vh;
+                z-index: 1000;
+                transition: left 0.3s ease;
+                border-right: none;
+                border-bottom: none;
+                overflow-y: auto;
+            }
+
+            .sidebar.active {
+                left: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                position: fixed;
+                top: 10px;
+                left: 10px;
+                z-index: 1002;
+            }
+
+            .close-menu {
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                font-size: 24px;
+                background: none;
+                border: none;
+                color: #ffffff;
+                cursor: pointer;
+            }
+
+            .main-content {
+                padding: 20px;
+                padding-top: 60px;
+                margin-top: 0;
+            }
+
+            .calculator-title {
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .calculator-container {
+                max-width: 100%;
+                padding: 15px;
+            }
+
+            .display {
+                font-size: 28px;
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .buttons-grid {
+                gap: 8px;
+            }
+
+            .btn {
+                padding: 12px;
+                font-size: 14px;
+                border-radius: 8px;
+            }
+
+            .btn.equals {
+                grid-column: span 2;
+            }
+
+            .scientific-layout {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .sci-functions,
+            .sci-keypad {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+
+            .tabs {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .tab-btn {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .form-input {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+
+            .converter-input-group {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .converter-input {
+                min-width: 70px;
+                flex: 1;
+                padding: 10px 12px;
+            }
+
+            .converter-select {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                margin-top: 15px;
+            }
+
+            .result-card {
+                padding: 12px;
+            }
+
+            .result-label {
+                font-size: 11px;
+            }
+
+            .result-value {
+                font-size: 18px;
+            }
+
+            .slider-group {
+                margin-bottom: 20px;
+            }
+
+            .slider-label {
+                gap: 10px;
+                margin-bottom: 8px;
+            }
+
+            .slider-label-text,
+            .slider-value {
+                font-size: 13px;
+            }
+
+            .bmi-result {
+                padding: 15px;
+                margin-top: 20px;
+            }
+
+            .bmi-number {
+                font-size: 36px;
+            }
+
+            .bmi-scale {
+                flex-direction: column;
+                font-size: 11px;
+            }
+
+            .base-input {
+                font-size: 18px;
+                padding: 12px;
+            }
+
+            .base-input-label {
+                font-size: 10px;
+            }
+
+            .electrical-header {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+            .electrical-input-wrapper {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .electrical-input {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .electrical-unit {
+                padding: 10px 12px;
+                font-size: 12px;
+                min-width: auto;
+                width: 100%;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 8px;
+                margin-top: 15px;
+            }
+
+            .calc-btn {
+                padding: 12px 16px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 12px;
+                padding-top: 50px;
+            }
+
+            .calculator-title {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+
+            .calculator-container {
+                padding: 12px;
+            }
+
+            .display {
+                font-size: 24px;
+                padding: 12px;
+                margin-bottom: 12px;
+                min-height: 50px;
+            }
+
+            .buttons-grid {
+                gap: 6px;
+            }
+
+            .btn {
+                padding: 10px;
+                font-size: 13px;
+                border-radius: 6px;
+            }
+
+            .login-container {
+                padding: 30px 20px;
+                max-width: 90%;
+            }
+
+            .logo-section {
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+            }
+
+            .logo-text {
+                font-size: 16px;
+            }
+
+            .calculators-label {
+                font-size: 10px;
+                margin-bottom: 10px;
+            }
+
+            .nav-item,
+            .sign-out {
+                padding: 10px 12px;
+                font-size: 13px;
+                gap: 8px;
+            }
+
+            .nav-icon {
+                font-size: 14px;
+                width: 18px;
+            }
+
+            .sci-functions,
+            .sci-keypad {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .converter-input-group {
+                flex-direction: column;
+            }
+
+            .converter-input,
+            .converter-select {
+                width: 100%;
+            }
+
+            .form-input {
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 12px;
+            }
+
+            input[type="text"],
+            input[type="password"] {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+
+            .sign-in-btn {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .menu-toggle {
+                display: none;
+            }
+
+            .close-menu {
+                display: none;
+            }
+
+            .sidebar {
+                position: relative !important;
+                left: 0 !important;
+            }
+        }
+
+        /* Landscape orientation adjustments */
+        @media (max-height: 600px) and (max-width: 900px) {
+            .main-content {
+                padding: 15px;
+                justify-content: flex-start;
+                overflow-y: auto;
+            }
+
+            .calculator-title {
+                margin-bottom: 15px;
+            }
+
+            .display {
+                font-size: 20px;
+                min-height: 45px;
+                margin-bottom: 10px;
+            }
+
+            .buttons-grid {
+                gap: 6px;
+            }
+
+            .btn {
+                padding: 8px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage">
+        <div class="login-container">
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="hexagon"></div>
+                </div>
+            </div>
+
+            <h1>Welcome to Qbit</h1>
+            <p class="subtitle">Your all-in-one smart calculator suite.</p>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <input 
+                        type="text" 
+                        id="username" 
+                        placeholder="demo" 
+                        value="demo"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        placeholder="••••••••" 
+                        value="acc123"
+                        required
+                    >
+                </div>
+
+                <p class="demo-account">Demo account provided</p>
+
+                <button type="submit" class="sign-in-btn">
+                    Sign in <span class="arrow">→</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Calculator Page -->
+    <div id="calculatorPage">
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <div class="sidebar">
+            <button class="close-menu" onclick="toggleMenu()">✕</button>
+            <div class="logo-section">
+                <div class="hexagon-logo"></div>
+                <div class="logo-text">Qbit</div>
+            </div>
+
+            <div class="calculators-label">CALCULATORS</div>
+
+            <div class="nav-menu">
+                <div class="nav-item active" onclick="switchCalculator(event, 'standard')">
+                    <span class="nav-icon">📱</span>
+                    <span>Standard</span>
+                </div>
+                <div class="nav-item" onclick="switchCalculator(event, 'scientific')">
+                    <span class="nav-icon">🔬</span>
+                    <span>Scientific</span>
+                </div>
+                <div class="nav-item" onclick="switchCalculator(event, 'financial')">
+                    <span class="nav-icon">💰</span>
+                    <span>Financial</span>
+                </div>
+                <div class="nav-item" onclick="switchCalculator(event, 'converter')">
+                    <span class="nav-icon">🔄</span>
+                    <span>Units Converter</span>
+                </div>
+                <div class="nav-item" onclick="switchCalculator(event, 'bmi')">
+                    <span class="nav-icon">⚖️</span>
+                    <span>BMI Calculator</span>
+                </div>
+                <div class="nav-item" onclick="switchCalculator(event, 'programmer')">
+                    <span class="nav-icon">💻</span>
+                    <span>Programmer (Base)</span>
+                </div>
+                <div class="nav-item" onclick="switchCalculator(event, 'electrical')">
+                    <span class="nav-icon">⚡</span>
+                    <span>Electrical</span>
+                </div>
+            </div>
+
+            <div class="sign-out" onclick="logout()">
+                <span class="nav-icon">↪️</span>
+                <span>Sign out</span>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div style="width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center;">
+                <div class="calculator-title" id="calcTitle">Standard</div>
+
+                <div class="calculator-container">
+                    <div id="standardCalc">
+                        <div class="display" id="display">0</div>
+                        <div class="buttons-grid">
+                            <button class="btn clear" onclick="clearStandard()">C</button>
+                            <button class="btn operator" onclick="appendNum('(')">(</button>
+                            <button class="btn operator" onclick="appendNum(')')">)</button>
+                            <button class="btn operator" onclick="appendOp('÷')">÷</button>
+                            <button class="btn" onclick="appendNum('7')">7</button>
+                            <button class="btn" onclick="appendNum('8')">8</button>
+                            <button class="btn" onclick="appendNum('9')">9</button>
+                            <button class="btn operator" onclick="appendOp('x')">x</button>
+                            <button class="btn" onclick="appendNum('4')">4</button>
+                            <button class="btn" onclick="appendNum('5')">5</button>
+                            <button class="btn" onclick="appendNum('6')">6</button>
+                            <button class="btn operator" onclick="appendOp('-')">-</button>
+                            <button class="btn" onclick="appendNum('1')">1</button>
+                            <button class="btn" onclick="appendNum('2')">2</button>
+                            <button class="btn" onclick="appendNum('3')">3</button>
+                            <button class="btn operator" onclick="appendOp('+')">+</button>
+                            <button class="btn" onclick="appendNum('0')">0</button>
+                            <button class="btn operator" onclick="appendNum('.')">.</button>
+                            <button class="btn equals" onclick="calcEqual()">=</button>
+                        </div>
+                    </div>
+
+                    <div id="scientificCalc" style="display: none;">
+                        <div class="display" id="sciDisplay">0</div>
+                        <div class="scientific-layout">
+                            <div class="sci-functions">
+                                <button class="btn operator" onclick="sciFunc('sin')">sin</button>
+                                <button class="btn operator" onclick="sciFunc('cos')">cos</button>
+                                <button class="btn operator" onclick="sciFunc('tan')">tan</button>
+                                <button class="btn operator" onclick="sciFunc('log')">log</button>
+                                <button class="btn operator" onclick="sciFunc('ln')">ln</button>
+                                <button class="btn operator" onclick="sciFunc('sqrt')">√</button>
+                                <button class="btn operator" onclick="appendSciOp('^')">^</button>
+                                <button class="btn operator" onclick="sciFunc('pi')">π</button>
+                                <button class="btn operator" onclick="sciFunc('e')">e</button>
+                                <button class="btn operator" onclick="appendSciNum('(')">( </button>
+                                <button class="btn operator" onclick="appendSciNum(')')">)</button>
+                                <button class="btn clear" onclick="clearScientific()">C</button>
+                            </div>
+                            <div class="sci-keypad">
+                                <button class="btn" onclick="appendSciNum('7')">7</button>
+                                <button class="btn" onclick="appendSciNum('8')">8</button>
+                                <button class="btn" onclick="appendSciNum('9')">9</button>
+                                <button class="btn operator" onclick="appendSciOp('÷')">÷</button>
+                                <button class="btn" onclick="appendSciNum('4')">4</button>
+                                <button class="btn" onclick="appendSciNum('5')">5</button>
+                                <button class="btn" onclick="appendSciNum('6')">6</button>
+                                <button class="btn operator" onclick="appendSciOp('x')">x</button>
+                                <button class="btn" onclick="appendSciNum('1')">1</button>
+                                <button class="btn" onclick="appendSciNum('2')">2</button>
+                                <button class="btn" onclick="appendSciNum('3')">3</button>
+                                <button class="btn operator" onclick="appendSciOp('-')">-</button>
+                                <button class="btn" onclick="appendSciNum('0')">0</button>
+                                <button class="btn" onclick="appendSciNum('00')">00</button>
+                                <button class="btn operator" onclick="appendSciNum('.')">.</button>
+                                <button class="btn operator" onclick="appendSciOp('+')">+</button>
+                            </div>
+                        </div>
+                        <button class="btn equals" onclick="sciCalcEqual()" style="width: 100%; margin-top: 12px;">=</button>
+                    </div>
+
+                    <div id="financialCalc" style="display: none;">
+                        <div class="tabs">
+                            <button class="tab-btn active" onclick="switchTab('savings')">💰 Savings Tracker</button>
+                        </div>
+
+                        <div id="savingsTab">
+                            <div class="form-group">
+                                <label class="form-label">Target Goal Amount</label>
+                                <div style="position: relative;">
+                                    <span style="position: absolute; left: 16px; top: 12px; color: #a0a0b8;">$</span>
+                                    <input type="number" id="goalAmount" class="form-input" value="10000" style="padding-left: 32px;">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Timeframe to Save</label>
+                                <div style="display: flex; gap: 12px; align-items: center;">
+                                    <button class="btn" onclick="decrementTime()" style="flex: 0; padding: 8px 12px;">−</button>
+                                    <input type="number" id="timeValue" class="form-input" value="1" style="text-align: center;">
+                                    <button class="btn" onclick="incrementTime()" style="flex: 0; padding: 8px 12px;">+</button>
+                                    <select id="timeUnit" class="converter-select">
+                                        <option>Years</option>
+                                        <option>Months</option>
+                                        <option>Weeks</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="results-grid">
+                                <div class="result-card">
+                                    <div class="result-label">Per Week</div>
+                                    <div class="result-value" id="perWeek">$192.31</div>
+                                </div>
+                                <div class="result-card">
+                                    <div class="result-label">Per Month</div>
+                                    <div class="result-value" id="perMonth">$833.33</div>
+                                </div>
+                                <div class="result-card full">
+                                    <div class="result-label">Per Year</div>
+                                    <div class="result-value" id="perYear">$10000.00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="converterCalc" style="display: none;">
+                        <div class="converter-group">
+                            <div class="converter-label">Length Converter</div>
+                            <div class="converter-input-group">
+                                <input type="number" id="fromValue" class="converter-input" value="1" oninput="convertUnits()" placeholder="Value">
+                                <select id="fromUnit" class="converter-select" onchange="convertUnits()">
+                                    <option>Meters (m)</option>
+                                    <option>Feet (ft)</option>
+                                    <option>Inches (in)</option>
+                                    <option>Kilometers (km)</option>
+                                    <option>Miles (mi)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: center; align-items: center; margin: 12px 0;">
+                            <div class="convert-btn" onclick="swapUnits()">⇄</div>
+                        </div>
+
+                        <div class="converter-group">
+                            <div class="converter-label">To</div>
+                            <div class="converter-input-group">
+                                <input type="number" id="toValue" class="converter-input" value="3.2808" readonly placeholder="Result">
+                                <select id="toUnit" class="converter-select" onchange="convertUnits()">
+                                    <option>Feet (ft)</option>
+                                    <option>Meters (m)</option>
+                                    <option>Inches (in)</option>
+                                    <option>Kilometers (km)</option>
+                                    <option>Miles (mi)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="bmiCalc" style="display: none;">
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span class="slider-label-text">Height</span>
+                                <span class="slider-value"><span id="heightValue">175</span> cm</span>
+                            </div>
+                            <input type="range" id="height" min="100" max="250" value="175" oninput="calculateBMI()">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-label">
+                                <span class="slider-label-text">Weight</span>
+                                <span class="slider-value"><span id="weightValue">70</span> kg</span>
+                            </div>
+                            <input type="range" id="weight" min="30" max="200" value="70" oninput="calculateBMI()">
+                        </div>
+
+                        <div class="bmi-result">
+                            <div style="color: #a0a0b8; margin-bottom: 5px;">Your BMI</div>
+                            <div class="bmi-number" id="bmiValue">22.9</div>
+                            <div class="bmi-status" id="bmiStatus">Normal weight</div>
+                        </div>
+
+                        <div class="bmi-scale">
+                            <div class="scale-item">< 18.5<br>Underweight</div>
+                            <div class="scale-item">18.5 - 24.9<br>Normal weight</div>
+                            <div class="scale-item">25 - 29.9<br>Overweight</div>
+                            <div class="scale-item">> 30<br>Obese</div>
+                        </div>
+                    </div>
+
+                    <div id="programmerCalc" style="display: none;">
+                        <div class="base-input-group">
+                            <label class="base-input-label decimal">Decimal (Base 10)</label>
+                            <input type="text" id="decimalInput" class="base-input decimal" placeholder="0" oninput="convertFromDecimal()">
+                        </div>
+
+                        <div class="base-input-group">
+                            <label class="base-input-label binary">Binary (Base 2)</label>
+                            <input type="text" id="binaryInput" class="base-input binary" placeholder="0" oninput="convertFromBinary()">
+                        </div>
+
+                        <div class="base-input-group">
+                            <label class="base-input-label hex">Hexadecimal (Base 16)</label>
+                            <input type="text" id="hexInput" class="base-input hex" placeholder="0" oninput="convertFromHex()">
+                        </div>
+
+                        <div class="base-input-group">
+                            <label class="base-input-label octal">Octal (Base 8)</label>
+                            <input type="text" id="octalInput" class="base-input octal" placeholder="0" oninput="convertFromOctal()">
+                        </div>
+
+                        <button class="calc-btn secondary" onclick="clearProgrammer()" style="width: 100%;">Clear All</button>
+                    </div>
+
+                    <div id="electricalCalc" style="display: none;">
+                        <div class="electrical-header">
+                            ⚡ Electrical Units Calculator
+                        </div>
+                        <p style="font-size: 13px; color: #a0a0b8; margin-bottom: 25px;">Enter any two values to calculate the others (Watts, Amps, Volts, Ohms).</p>
+
+                        <div class="electrical-input-group">
+                            <label class="electrical-input-label">Power</label>
+                            <div class="electrical-input-wrapper">
+                                <input type="number" id="watts" class="electrical-input" placeholder="e.g. 24" oninput="calculateElectrical()">
+                                <select id="wattUnit" class="electrical-unit" onchange="calculateElectrical()">
+                                    <option>mW</option>
+                                    <option selected>W</option>
+                                    <option>kW</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="electrical-input-group">
+                            <label class="electrical-input-label">Current</label>
+                            <div class="electrical-input-wrapper">
+                                <input type="number" id="amps" class="electrical-input" placeholder="e.g. 2" oninput="calculateElectrical()">
+                                <select id="ampUnit" class="electrical-unit" onchange="calculateElectrical()">
+                                    <option>mA</option>
+                                    <option selected>A</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="electrical-input-group">
+                            <label class="electrical-input-label">Voltage</label>
+                            <div class="electrical-input-wrapper">
+                                <input type="number" id="volts" class="electrical-input" placeholder="e.g. 12" oninput="calculateElectrical()">
+                                <select id="voltUnit" class="electrical-unit" onchange="calculateElectrical()">
+                                    <option>mV</option>
+                                    <option selected>V</option>
+                                    <option>kV</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="electrical-input-group">
+                            <label class="electrical-input-label">Resistance</label>
+                            <div class="electrical-input-wrapper">
+                                <input type="number" id="resistance" class="electrical-input" placeholder="e.g. 6" oninput="calculateElectrical()">
+                                <select id="ohmsUnit" class="electrical-unit" onchange="calculateElectrical()">
+                                    <option>Ω</option>
+                                    <option>kΩ</option>
+                                    <option>MΩ</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="results-grid" id="electricalResults" style="display: none;">
+                            <div class="result-card">
+                                <div class="result-label">Power</div>
+                                <div class="result-value" id="wattResult">0 W</div>
+                            </div>
+                            <div class="result-card">
+                                <div class="result-label">Current</div>
+                                <div class="result-value" id="ampResult">0 A</div>
+                            </div>
+                            <div class="result-card">
+                                <div class="result-label">Voltage</div>
+                                <div class="result-value" id="voltResult">0 V</div>
+                            </div>
+                            <div class="result-card">
+                                <div class="result-label">Resistance</div>
+                                <div class="result-value" id="ohmResult">0 Ω</div>
+                            </div>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="calc-btn secondary" onclick="clearElectrical()">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+            }
+        }
+
+        // Close menu on calculator selection
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', closeMenu);
+        });
+
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'demo' && password === 'acc123') {
+                alert('Login successful! Welcome to Qbit');
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('calculatorPage').style.display = 'flex';
+            } else {
+                alert('Invalid username or password. Use demo / acc123');
+            }
+        });
+
+        // Standard Calculator
+        let stdDisplay = '0', stdPrev = '', stdOp = null, stdReset = false;
+
+        function appendNum(n) {
+            if (stdReset) { stdDisplay = n; stdReset = false; }
+            else if (stdDisplay === '0' && n !== '.') stdDisplay = n;
+            else if (n === '.' && stdDisplay.includes('.')) return;
+            else stdDisplay += n;
+            document.getElementById('display').textContent = stdDisplay;
+        }
+
+        function appendOp(op) {
+            if (stdOp !== null && !stdReset) calcEqual();
+            stdPrev = stdDisplay;
+            stdOp = op;
+            stdReset = true;
+        }
+
+        function calcEqual() {
+            if (stdOp === null || stdReset) return;
+            let res, p = parseFloat(stdPrev), c = parseFloat(stdDisplay);
+            if (stdOp === '+') res = p + c;
+            else if (stdOp === '-') res = p - c;
+            else if (stdOp === 'x') res = p * c;
+            else if (stdOp === '÷') res = p / c;
+            stdDisplay = res.toString();
+            stdOp = null;
+            stdReset = true;
+            document.getElementById('display').textContent = stdDisplay;
+        }
+
+        function clearStandard() {
+            stdDisplay = '0'; stdPrev = ''; stdOp = null; stdReset = false;
+            document.getElementById('display').textContent = stdDisplay;
+        }
+
+        // Scientific Calculator
+        let sciDisplay = '0', sciPrev = '', sciOp = null, sciReset = false;
+
+        function appendSciNum(n) {
+            if (sciReset) { sciDisplay = n; sciReset = false; }
+            else if (sciDisplay === '0' && n !== '.') sciDisplay = n;
+            else if (n === '.' && sciDisplay.includes('.')) return;
+            else sciDisplay += n;
+            document.getElementById('sciDisplay').textContent = sciDisplay;
+        }
+
+        function appendSciOp(op) {
+            if (sciOp !== null && !sciReset) sciCalcEqual();
+            sciPrev = sciDisplay;
+            sciOp = op;
+            sciReset = true;
+        }
+
+        function sciFunc(func) {
+            let val = parseFloat(sciDisplay);
+            if (func === 'sin') sciDisplay = Math.sin(val * Math.PI / 180).toString();
+            else if (func === 'cos') sciDisplay = Math.cos(val * Math.PI / 180).toString();
+            else if (func === 'tan') sciDisplay = Math.tan(val * Math.PI / 180).toString();
+            else if (func === 'log') sciDisplay = Math.log10(val).toString();
+            else if (func === 'ln') sciDisplay = Math.log(val).toString();
+            else if (func === 'sqrt') sciDisplay = Math.sqrt(val).toString();
+            else if (func === 'pi') sciDisplay = Math.PI.toString();
+            else if (func === 'e') sciDisplay = Math.E.toString();
+            sciReset = true;
+            document.getElementById('sciDisplay').textContent = sciDisplay;
+        }
+
+        function sciCalcEqual() {
+            if (sciOp === null || sciReset) return;
+            let res, p = parseFloat(sciPrev), c = parseFloat(sciDisplay);
+            if (sciOp === '+') res = p + c;
+            else if (sciOp === '-') res = p - c;
+            else if (sciOp === 'x') res = p * c;
+            else if (sciOp === '÷') res = p / c;
+            else if (sciOp === '^') res = Math.pow(p, c);
+            sciDisplay = res.toString();
+            sciOp = null;
+            sciReset = true;
+            document.getElementById('sciDisplay').textContent = sciDisplay;
+        }
+
+        function clearScientific() {
+            sciDisplay = '0'; sciPrev = ''; sciOp = null; sciReset = false;
+            document.getElementById('sciDisplay').textContent = sciDisplay;
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('savingsTab').style.display = tab === 'savings' ? 'block' : 'none';
+            document.getElementById('loanTab').style.display = tab === 'loan' ? 'block' : 'none';
+        }
+
+        function incrementTime() {
+            document.getElementById('timeValue').value = parseInt(document.getElementById('timeValue').value) + 1;
+            calculateSavings();
+        }
+
+        function decrementTime() {
+            let val = parseInt(document.getElementById('timeValue').value);
+            if (val > 1) document.getElementById('timeValue').value = val - 1;
+            calculateSavings();
+        }
+
+        function calculateSavings() {
+            let goal = parseFloat(document.getElementById('goalAmount').value) || 10000;
+            let time = parseInt(document.getElementById('timeValue').value) || 1;
+            let unit = document.getElementById('timeUnit').value;
+            
+            let weeks = unit === 'Years' ? time * 52 : unit === 'Months' ? time * 4.3 : time;
+            let perWeek = goal / weeks;
+            let perMonth = perWeek * 4.3;
+            let perYear = perMonth * 12;
+
+            document.getElementById('perWeek').textContent = '$' + perWeek.toFixed(2);
+            document.getElementById('perMonth').textContent = '$' + perMonth.toFixed(2);
+            document.getElementById('perYear').textContent = '$' + perYear.toFixed(2);
+        }
+
+        document.getElementById('goalAmount').addEventListener('input', calculateSavings);
+        document.getElementById('timeUnit').addEventListener('change', calculateSavings);
+
+        const conversions = {
+            'Meters (m)': { 'Feet (ft)': 3.28084, 'Inches (in)': 39.3701, 'Kilometers (km)': 0.001, 'Miles (mi)': 0.000621371 },
+            'Feet (ft)': { 'Meters (m)': 0.3048, 'Inches (in)': 12, 'Kilometers (km)': 0.0003048, 'Miles (mi)': 0.000189394 },
+            'Inches (in)': { 'Meters (m)': 0.0254, 'Feet (ft)': 0.0833333, 'Kilometers (km)': 0.0000254, 'Miles (mi)': 0.0000157828 },
+            'Kilometers (km)': { 'Meters (m)': 1000, 'Feet (ft)': 3280.84, 'Inches (in)': 39370.1, 'Miles (mi)': 0.621371 },
+            'Miles (mi)': { 'Meters (m)': 1609.34, 'Feet (ft)': 5280, 'Inches (in)': 63360, 'Kilometers (km)': 1.60934 }
+        };
+
+        function convertUnits() {
+            let from = document.getElementById('fromUnit').value;
+            let to = document.getElementById('toUnit').value;
+            let value = parseFloat(document.getElementById('fromValue').value) || 0;
+            let result = value * conversions[from][to];
+            document.getElementById('toValue').value = result.toFixed(4);
+        }
+
+        function swapUnits() {
+            let from = document.getElementById('fromUnit').value;
+            let to = document.getElementById('toUnit').value;
+            document.getElementById('fromUnit').value = to;
+            document.getElementById('toUnit').value = from;
+            convertUnits();
+        }
+
+        function calculateBMI() {
+            let height = parseInt(document.getElementById('height').value) / 100;
+            let weight = parseInt(document.getElementById('weight').value);
+            let bmi = weight / (height * height);
+            
+            document.getElementById('heightValue').textContent = document.getElementById('height').value;
+            document.getElementById('weightValue').textContent = weight;
+            document.getElementById('bmiValue').textContent = bmi.toFixed(1);
+            
+            let status = '';
+            if (bmi < 18.5) status = 'Underweight';
+            else if (bmi < 25) status = 'Normal weight';
+            else if (bmi < 30) status = 'Overweight';
+            else status = 'Obese';
+            
+            document.getElementById('bmiStatus').textContent = status;
+        }
+
+        function updateAllBases(decimalValue) {
+            if (isNaN(decimalValue) || decimalValue === '') {
+                document.getElementById('decimalInput').value = '';
+                document.getElementById('binaryInput').value = '';
+                document.getElementById('hexInput').value = '';
+                document.getElementById('octalInput').value = '';
+                return;
+            }
+            
+            const dec = parseInt(decimalValue);
+            if (isNaN(dec)) return;
+            
+            document.getElementById('decimalInput').value = dec;
+            document.getElementById('binaryInput').value = dec.toString(2);
+            document.getElementById('hexInput').value = dec.toString(16).toUpperCase();
+            document.getElementById('octalInput').value = dec.toString(8);
+        }
+
+        function convertFromDecimal() {
+            const value = document.getElementById('decimalInput').value;
+            if (value === '') {
+                updateAllBases('');
+                return;
+            }
+            const dec = parseInt(value, 10);
+            updateAllBases(dec);
+        }
+
+        function convertFromBinary() {
+            const value = document.getElementById('binaryInput').value;
+            if (value === '') {
+                updateAllBases('');
+                return;
+            }
+            const dec = parseInt(value, 2);
+            updateAllBases(dec);
+        }
+
+        function convertFromHex() {
+            const value = document.getElementById('hexInput').value;
+            if (value === '') {
+                updateAllBases('');
+                return;
+            }
+            const dec = parseInt(value, 16);
+            updateAllBases(dec);
+        }
+
+        function convertFromOctal() {
+            const value = document.getElementById('octalInput').value;
+            if (value === '') {
+                updateAllBases('');
+                return;
+            }
+            const dec = parseInt(value, 8);
+            updateAllBases(dec);
+        }
+
+        function clearProgrammer() {
+            document.getElementById('decimalInput').value = '';
+            document.getElementById('binaryInput').value = '';
+            document.getElementById('hexInput').value = '';
+            document.getElementById('octalInput').value = '';
+        }
+
+        function getUnitMultiplier(unit, type) {
+            const multipliers = {
+                'watts': { 'mW': 0.001, 'W': 1, 'kW': 1000 },
+                'amps': { 'mA': 0.001, 'A': 1 },
+                'volts': { 'mV': 0.001, 'V': 1, 'kV': 1000 },
+                'ohms': { 'Ω': 1, 'kΩ': 1000, 'MΩ': 1000000 }
+            };
+            return multipliers[type][unit];
+        }
+
+        function calculateElectrical() {
+            let wattUnit = document.getElementById('wattUnit').value;
+            let ampUnit = document.getElementById('ampUnit').value;
+            let voltUnit = document.getElementById('voltUnit').value;
+            let ohmsUnit = document.getElementById('ohmsUnit').value;
+
+            let wInput = parseFloat(document.getElementById('watts').value) || 0;
+            let aInput = parseFloat(document.getElementById('amps').value) || 0;
+            let vInput = parseFloat(document.getElementById('volts').value) || 0;
+            let rInput = parseFloat(document.getElementById('resistance').value) || 0;
+
+            // Convert to base units (W, A, V, Ω)
+            let w = wInput * getUnitMultiplier(wattUnit, 'watts');
+            let a = aInput * getUnitMultiplier(ampUnit, 'amps');
+            let v = vInput * getUnitMultiplier(voltUnit, 'volts');
+            let r = rInput * getUnitMultiplier(ohmsUnit, 'ohms');
+
+            // Calculate missing values using Ohm's and Watt's laws
+            if (w > 0 && a > 0) {
+                v = w / a;
+                r = v / a;
+            } else if (w > 0 && v > 0) {
+                a = w / v;
+                r = v / a;
+            } else if (a > 0 && v > 0) {
+                w = a * v;
+                r = v / a;
+            } else if (v > 0 && r > 0) {
+                a = v / r;
+                w = a * v;
+            }
+
+            // Convert back to display units
+            let wDisplay = w / getUnitMultiplier(wattUnit, 'watts');
+            let aDisplay = a / getUnitMultiplier(ampUnit, 'amps');
+            let vDisplay = v / getUnitMultiplier(voltUnit, 'volts');
+            let rDisplay = r / getUnitMultiplier(ohmsUnit, 'ohms');
+
+            // Show results if any calculation was done
+            if (w > 0 || a > 0 || v > 0 || r > 0) {
+                document.getElementById('electricalResults').style.display = 'grid';
+                document.getElementById('wattResult').textContent = wDisplay ? wDisplay.toFixed(4) + ' ' + wattUnit : '0 ' + wattUnit;
+                document.getElementById('ampResult').textContent = aDisplay ? aDisplay.toFixed(4) + ' ' + ampUnit : '0 ' + ampUnit;
+                document.getElementById('voltResult').textContent = vDisplay ? vDisplay.toFixed(4) + ' ' + voltUnit : '0 ' + voltUnit;
+                document.getElementById('ohmResult').textContent = rDisplay ? rDisplay.toFixed(4) + ' ' + ohmsUnit : '0 ' + ohmsUnit;
+            } else {
+                document.getElementById('electricalResults').style.display = 'none';
+            }
+        }
+
+        function clearElectrical() {
+            document.getElementById('watts').value = '';
+            document.getElementById('amps').value = '';
+            document.getElementById('volts').value = '';
+            document.getElementById('resistance').value = '';
+            document.getElementById('electricalResults').style.display = 'none';
+        }
+
+        function switchCalculator(e, type) {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            e.target.closest('.nav-item').classList.add('active');
+
+            const titles = {
+                'standard': 'Standard', 'scientific': 'Scientific', 'financial': 'Financial',
+                'converter': 'Units Converter', 'bmi': 'BMI Calculator', 'programmer': 'Programmer (Base)', 'electrical': 'Electrical'
+            };
+            document.getElementById('calcTitle').textContent = titles[type];
+
+            document.getElementById('standardCalc').style.display = type === 'standard' ? 'block' : 'none';
+            document.getElementById('scientificCalc').style.display = type === 'scientific' ? 'block' : 'none';
+            document.getElementById('financialCalc').style.display = type === 'financial' ? 'block' : 'none';
+            document.getElementById('converterCalc').style.display = type === 'converter' ? 'block' : 'none';
+            document.getElementById('bmiCalc').style.display = type === 'bmi' ? 'block' : 'none';
+            document.getElementById('programmerCalc').style.display = type === 'programmer' ? 'block' : 'none';
+            document.getElementById('electricalCalc').style.display = type === 'electrical' ? 'block' : 'none';
+            
+            closeMenu();
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to sign out?')) {
+                document.getElementById('calculatorPage').style.display = 'none';
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('username').value = 'demo';
+                document.getElementById('password').value = 'acc123';
+                
+                // Close menu and reset sidebar state
+                const sidebar = document.querySelector('.sidebar');
+                sidebar.classList.remove('active');
+            }
+        }
+
+        calculateBMI();
+        calculateSavings();
+    </script>
+</body>
+</html>
